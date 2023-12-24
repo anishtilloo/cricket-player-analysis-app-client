@@ -1,9 +1,9 @@
 # Frontend for the Cricket Analysis App
 
-- Starting the application
+## Starting the application
 
-  -- Starting using npm
-     --- npm run dev
+Starting using npm
+- npm run dev
 
 # React + TypeScript + Vite
 

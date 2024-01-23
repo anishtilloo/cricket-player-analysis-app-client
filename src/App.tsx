@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { ResponseTeams, ResponseTeam } from "./types/team.types";
-import { ResponsePlayers, ResponsePlayer } from "./types/player.types";
+import { ResponsePlayers, ResponsePlayer, Player } from "./types/player.types";
 
 
 function App() {
@@ -12,6 +12,8 @@ function App() {
   const [player, setPlayer] = useState<ResponsePlayer | undefined>();
   const [team_Id, setTeam_Id] = useState<number | undefined>();
   const [player_Id, setPlayer_Id] = useState<number | undefined>();
+  const [playing11, setPlaying11] = useState<Player[]>([]);
+  const [yourTeam, setYourTeam] = useState<Player[]>([]);
 
   const getIdAndSendTeam = (id: number | undefined) => {
     setTeam_Id(id);
@@ -75,24 +77,49 @@ function App() {
     }
   }, [apiUrl, player_Id]);
 
+  console.log("your team" , yourTeam);
+  
+
   return (
     <>
-      <div className="bg-[#0f0f0f] h-[100vh] flex justify-evenly">
+      <div className="bg-[#0f0f0f] h-[200vh] flex justify-evenly">
         <div className="text-[#ffffff] text-md">
           <h3 className="text-lg text-[#adadad]">GET ALL TEAMS</h3>
           {teams?.data.map((t) => (
             <div key={t.id}>
               <button onClick={() => getIdAndSendTeam(t.id)}>{t.id}. {t.teamName}</button>
             </div>
-          ))}
+          )) ?? []}
         </div>
-        <div className="text-[#ffffff] text-md">
-          <h3 className="text-lg text-[#adadad]">GET ALL PLAYERS</h3>
-          {players?.data.map((p) => (
-            <div key={p.id}>
-              <button onClick={() => getIdAndSendPlayer(p.id)}>{p.id}. {p.playerName}</button>
-            </div>
-          ))}
+        <div>
+          <div className="text-[#ffffff] text-md">
+            <h3 className="text-lg text-[#adadad]">GET ALL PLAYERS</h3>
+            {players?.data.map((p) => (
+              <div key={p.id}>
+                <button className="mx-4 mt-1" onClick={() => getIdAndSendPlayer(p.id)}>{p.id}. {p.playerName}</button>
+                {
+                  yourTeam.includes(p) ?
+                  null
+                : <button className="bg-[#9f9f9f] mx-4 rounded-md" onClick={() => {
+                    if ((!yourTeam) || (yourTeam && yourTeam.length < 25)) {
+                      setYourTeam([...yourTeam, p]);
+                    }
+                  }}>Add in your team</button>
+                }
+                {
+                  playing11.includes(p) ?
+                  null
+                : <button className="bg-[#9f9f9f] mx-4 rounded-md" onClick={() => {
+                    if ((!playing11) || (playing11 && playing11.length < 11)) {
+                      setPlaying11([...playing11, p]);
+                    }
+                  }}>Add in playing 11</button>
+                }
+              </div>
+            )) ?? []}
+          </div>
+          <button className="bg-[#2ddd30] mx-4 rounded-md text-white p-2 m-1">Save</button>
+          <button className="bg-[#ff2121] mx-4 rounded-md text-white p-2 m-1">Cancel</button>
         </div>
         <div className="text-[#ffffff] text-md">
           <h3 className="text-lg text-[#adadad]">GET ONE TEAM</h3>
@@ -117,6 +144,22 @@ function App() {
               <p>No player data available</p>
             )
           }
+        </div>
+        <div className="text-[#ffffff] text-md">
+          <h3 className="text-lg text-[#adadad]">Your Selected Team</h3>
+          {yourTeam.map((team) => (
+            <div key={team.id}>
+              <button>{team.id}. {team.playerName}</button>
+            </div>
+          )) ?? []}
+        </div>
+        <div className="text-[#ffffff] text-md">
+          <h3 className="text-lg text-[#adadad]">Playing 11</h3>
+          {playing11.map((team) => (
+            <div key={team.id}>
+              <button>{team.id}. {team.playerName}</button>
+            </div>
+          )) ?? []}
         </div>
       </div>
     </>

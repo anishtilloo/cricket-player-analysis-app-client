@@ -16,8 +16,14 @@ export type Player = {
     teamName: string,
 }
 
-export type ResponsePlayer = {
+export type ResponsePlayers = {
     success: boolean;
     message: string;
     data: Player[];
+}
+
+export type ResponsePlayer = {
+    success: boolean;
+    message: string;
+    data: Player;
 }

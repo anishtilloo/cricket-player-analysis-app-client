@@ -11,8 +11,14 @@ export type Team = {
     netWorth: number;
 }
   
-export type ResponseTeam = {
+export type ResponseTeams = {
     success: boolean;
     message: string;
     data: Team[];
+}
+
+export type ResponseTeam = {
+    success: boolean;
+    message: string;
+    data: Team;
 }
